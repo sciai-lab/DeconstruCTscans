@@ -1,0 +1,62 @@
+proposal_generator_config:
+  path_part_catalog: "fill_in"
+  path_h5_segmentation: "fill_in"
+  segmentation_catalog_kwargs:
+    minimum_segment_size: 3000
+  matching_kwargs:
+    matcher_config:
+      property_key: "feature_centers"
+      distance_metric: "auto"
+      use_subsampled: True
+    compute_feature_centers_kwargs:
+      num_centers: 25
+      append_mass: True
+    compute_bovw_kwargs:
+      num_features_per_object: 2000
+      num_centers: 512
+  marching_smoother_config:
+    smoothing_config:
+      method: "laplacian"
+      method_kwargs:
+        lamb: 0.5
+        iterations: 10
+  feature_config:
+    fpfh_radius: 3
+    fpfh_max_nn: 200
+  registration_config:
+    presample_config:
+      desired_num_points: 50000  # sampled randomly
+    pcd_subsampler_config:
+      method: "fps"
+      num_points_threshold: &sample 10000  # effectively only presampling
+      method_kwargs:
+        num_points: *sample
+    list_registration_configs:
+      - method: "pca"
+        icp_refinement: True
+        use_subsampled: True
+      - method: "ransac"
+        use_subsampled: True
+        icp_refinement: True
+        use_my_correspondences: True
+    max_num_parts_per_segment: 20
+  use_cheat_matching: False
+
+proposal_selector_config:
+  path_z5_voxelization: "fill_in"
+  results_folder: "fill_in"
+  num_threads: 16
+  greedy_selection_only: False
+  greedy_selection_kwargs:
+    perform_k_erosions: 2
+    relative_overlap_threshold: 0.
+    minimum_rel_fg_overlap: 0.7
+  mwis_selection_kwargs:
+    perform_k_erosions: 2
+    relative_overlap_threshold: 0.
+    minimum_rel_fg_overlap: 0.7
+  mwis_weight_kwargs:
+    score: "foreground_diff"
+    multiply_with_foreground_overlap: False
+  affinity_score_kwargs:
+    use_only_long_range_affs: False

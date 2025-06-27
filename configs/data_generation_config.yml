@@ -1,0 +1,20 @@
+part_catalog_config:
+  name: "fill_in"
+  abs_path_to_data: "fill_in"
+  decimate_reduction: 0.2
+  streak_rotation_angles: "fill_in"
+  choose_materials: real_scan
+  verbose: True
+  path_part_info: default
+
+load_artist_config:
+  path_scan_config: default
+
+generate_dataset_config:
+  num_threads: &num_threads 8
+  save_colored_insseg: True
+
+generate_voxelized_catalog_config:
+  num_threads: *num_threads
+  random_rotation: True
+  margin: 4
